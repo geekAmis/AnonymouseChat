@@ -29,7 +29,7 @@ def check(msg):
 def rchar():
 	return random.choice(list('qwert8yui7opasdfghjkl1zxcv5b6nm_$QWERT4YUIO23PASD9FGHJK0LZXCVBNM'))
 
-def generate_hash(len_=16):
+def generate_hash(len_=39):
 	word = ''
 	for i in range(0,len_):
 		word += str(rchar())
@@ -58,6 +58,48 @@ def allowed_file(filename,sp=0):
 
 
 def send_message(chat_id, message):
-    url = 'https://api.telegram.org/bot{}/sendMessage'.format(token)
-    payload = {'chat_id': chat_id, 'text': message}
-    requests.post(url, json=payload)
+	url = 'https://api.telegram.org/bot{}/sendMessage'.format(token)
+	payload = {'chat_id': chat_id, 'text': message}
+	requests.post(url, json=payload)
+
+def change_base(hash_,name,per):
+	cursor.execute(f"UPDATE users SET {name} = ? WHERE hash = ?", (per, hash_))
+	conn.commit()
+
+def change_per_base(hash_,pers,per):
+	change_base(hash_,db_pers_num[int(pers)],per)
+
+def add_to_base(username, password, phone, fio, hash_, snils='', passport_series='', birthdate='', citizenship='', male_female='', friends='', mailTo=''):
+	cursor.execute('''
+	INSERT INTO users (username, password, phone, fio, hash, snils, passport_series, birthdate, citizenship, male_female, friends, mailTo)
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (username, password, phone, fio, hash_, snils, passport_series, birthdate, citizenship, male_female, friends, mailTo))
+	conn.commit()
+
+
+def to_json():
+    global users
+    global db_pers_num
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users")
+    db_users = cursor.fetchall()
+    for user in db_users:
+        users[user[1]] = {
+            "password": user[2],
+            "phone": user[3],
+            "fio": user[4],
+            "hash": user[5],
+            "snils": user[6],
+            "passport_series": user[7],
+            "birthdate": user[8],
+            "citizenship": user[9],
+            "male_female": user[10],
+            "friends": user[11],
+            "mailTo": user[12]
+        }
+
+    cursor.execute('SELECT * FROM users LIMIT 1')
+    db_pers_num = [description[0] for description in cursor.description][1:];print(db_pers_num)
+    conn.commit()
+
+
+to_json()

@@ -146,7 +146,7 @@ def handle_message(message):
 
 	elif 'on' in message_l and '<' in message_l and '"' in message_l:
 		message = f'<div class="hack"><h1>В этом сообщении скрипт, нажмите на него только если ему доверяете!</h1>{message}</div>'
-	
+	#print(f'\n---------------------\n{nick}  : {message}\n---------------------') Logistick on debug version
 	
 	if message == 'U_p_l_D_r_0':
 		writemessage(message)
@@ -179,7 +179,7 @@ def writemessage(key):
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
 	response = make_response(redirect(url_for('login')))
-	response.set_cookie('my_cookie', '', expires=datetime.now() - timedelta(days=1))
+	response.set_cookie('hash', '', expires=datetime.now() - timedelta(days=1))
 	return response
 
 @app.route('/edit', methods=['GET', 'POST'])
@@ -191,22 +191,23 @@ def edit_index():
 
 	if request.method == 'POST':
 		phone = request.form['phone']
-		fi = request.form['first_name'].strip()
-		ii = request.form['last_name'].strip()
+		fi = request.form['last_name'].strip()
+		ii = request.form['first_name'].strip()
 		oi = request.form['patronymic'].strip()
 		snils = request.form['snils']
 		passport_series = request.form['passport_series']
 		birthdate = request.form['birthdate']
 		citizenship = request.form['citizenship']
 		fio = fi+' '+ii+' '+oi
-		users[user]['snils'] = snils
-		users[user]['passport_series'] = passport_series
-		users[user]['birthdate'] = birthdate
-		users[user]['citizenship'] = citizenship
-		users[user]['phone'] = phone
+		users[user]['snils'] = snils;change_per_base(hash_,5,snils)
+		users[user]['passport_series'] = passport_series;change_per_base(hash_,6,passport_series)
+		users[user]['birthdate'] = birthdate;change_per_base(hash_,7,birthdate)
+		users[user]['citizenship'] = citizenship;change_per_base(hash_,8,citizenship)
+		users[user]['phone'] = phone;change_per_base(hash_,2,phone)
 		if fio != users[user]['fio']:
 			users[user]['fio'] = fio
-		return redirect('index')
+			change_per_base(hash_,3,fio)
+		return redirect('/')
 
 	return make_response(render_template('edit_index.html',
 		username=user,phone=users[user]['phone'],
@@ -237,9 +238,11 @@ def register():
 		phone = request.form['phone']
 		fio = request.form['fio']
 		if username not in users:
-			users[username] = {'password': password,'phone':phone,'fio':fio, 'hash': generate_hash(),'snils':'','passport_series':'', 'birthdate':'','citizenship':''}
+			hash_ = generate_hash()
+			add_to_base(username, password, phone, fio, hash_)
+			users[username] = {'password': password,'phone':phone,'fio':fio, 'hash': hash_,'snils':'','passport_series':'', 'birthdate':'','citizenship':''}
 			resp = make_response(render_template('registration.html', message='Registration successful'))
-			resp.set_cookie('hash', users[username]['hash'])
+			resp.set_cookie('hash', hash_)
 			return resp
 		else:
 			return render_template('registration.html', message='Username already exists')
@@ -254,12 +257,12 @@ def login():
 		username = request.form['username']
 		password = request.form['password']
 		if username in users and password == users[username]['password']:
-			resp = make_response(render_template('login.html', message='<script>window.location.href = "/";</script>'))
+			resp = make_response(redirect('/'))
 			resp.set_cookie('hash', users[username]['hash'])
 			return resp
 		else:
-			return render_template('login.html', message='Invalid username or password')
+			return render_template('login.html', message=Markup('<script>alert("Invalid username or password");</script>'))
 	else:
 		response = make_response(render_template('login.html'))
-		response.set_cookie('my_cookie', '', expires=datetime.now() - timedelta(days=1))
+		#response.set_cookie('my_cookie', '', expires=datetime.now() - timedelta(days=1))
 		return render_template('login.html')
