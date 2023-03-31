@@ -146,7 +146,7 @@ def handle_message(message):
 
 	elif 'on' in message_l and '<' in message_l and '"' in message_l:
 		message = f'<div class="hack"><h1>В этом сообщении скрипт, нажмите на него только если ему доверяете!</h1>{message}</div>'
-	print(f'\n---------------------\n{nick}  : {message}\n---------------------')
+	
 	
 	if message == 'U_p_l_D_r_0':
 		writemessage(message)
