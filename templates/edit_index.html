@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+<title>Редактирование профиля - Цифровая Платформа Чемпионата</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<link href="https://esim.firpo.ru/img/favicon.ico" rel="icon" type="image/x-icon">
+<link href="edit_index_files/icon.css" rel="stylesheet">
+<link href="edit_index_files/css.css" rel="stylesheet">
+<link href="edit_index_files/theme.css" rel="stylesheet" type="text/css" media="all">
+<link href="edit_index_files/custom.css" rel="stylesheet" type="text/css" media="all">
+<meta name="theme-color" content="#ffffff">
+<link rel="apple-touch-icon" sizes="180x180" href="https://esim.firpo.ru/img/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://esim.firpo.ru/img/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://esim.firpo.ru/img/favicons/favicon-16x16.png">
+<link rel="manifest" href="https://esim.firpo.ru/img/favicons/site.webmanifest">
+<link rel="mask-icon" href="https://esim.firpo.ru/img/favicons/safari-pinned-tab.svg" color="#4ecc0a">
+<link rel="shortcut icon" href="https://esim.firpo.ru/img/favicons/favicon.ico">
+<meta name="msapplication-TileColor" content="#00a300">
+<meta name="msapplication-config" content="/img/favicons/browserconfig.xml">
+
+<script src="/static/socket.io.min.js"></script>
+    <script>
+        var socket = io();
+        
+    </script>
+
+
+</head>
+
+<body cz-shortcut-listen="true">
+
+<div class="layout layout-nav-side">
+    <div class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
+
+    <a class="navbar-brand" href="https://esim.firpo.ru/">
+        <img alt="" src="edit_index_files/pro-logo-white.svg">
+    </a>
+    <div class="d-flex align-items-center">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="d-block d-lg-none ml-2">
+            <div class="dropdown">
+                <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img alt="Image" src="edit_index_files/user_icon.svg" class="avatar">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="https://esim.firpo.ru/user/profile" class="dropdown-item">Профиль</a>
+                    <a href="https://esim.firpo.ru/logout" class="dropdown-item">Выход</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="collapse navbar-collapse flex-column" id="navbar-collapse">
+        <ul class="navbar-nav d-lg-block">
+            
+            <hr>
+            
+            
+        </ul>
+
+
+        <hr>
+        <div class="d-none d-lg-block w-100">
+            <span class="text-small text-muted">Полезное</span>
+            <ul class="nav nav-small flex-column mt-2">
+                <li class="nav-item"> 
+                    <a class="nav-link" target="_blank" href="/chat">Анонимный чат</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/req" target="_blank" class="nav-link">Разработчик</a>
+                </li>   
+                <li class="nav-item">
+                    <a href="/donate" target="_blank" class="nav-link">Донат</a>
+                </li>
+                <li class="nav-item"> 
+                    <a class="nav-link" target="_blank" href="https://any-more.ru">Any-mangA</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/" class="nav-link">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin-page" class="nav-link">Admin page</a>
+                </li>
+
+            </ul>
+            <hr>
+        </div>
+
+        <div>
+
+
+        </div>
+    </div>
+    <div class="d-none d-lg-block">
+        <div class="dropup" onclick="document.getElementById('show-menu').classList.toggle('show');">
+            <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img alt="Image" src="index_files/3390ad36f1914b32838f55683c95a1f4_00000-thumb.jpg" class="avatar">
+            </a>
+            <div class="dropdown-menu" id="show-menu">
+                <p class="dropdown-item disabled">{{ username }}</p>
+                <a href="/" class="dropdown-item">Профиль</a>
+                <a href="/logout" class="dropdown-item">Выход</a>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="main-container">
+
+        
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+
+        <div class="col-lg-3 mb-3">
+
+            <ul class="nav nav-tabs flex-lg-column" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="profile_tab_link" data-toggle="tab" href="#profile_tab" role="tab" aria-controls="profile_tab" aria-selected="true">Профиль</a>
+                    <a class="nav-link d-none " id="education_tab_link" data-toggle="tab" href="#education_tab" role="tab" aria-controls="education_tab" aria-selected="true">Образование</a>
+                    <a class="nav-link d-none" id="work_tab_link" data-toggle="tab" href="#work_tab" role="tab" aria-controls="work_tab" aria-selected="true">Работа</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-xl-8 col-lg-9">
+            <div class="card">
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" role="tabpanel" id="profile_tab">
+                            <form method="post" enctype="multipart/form-data" id="avatar_upload_form" class="media mb-4" action="/edit-pic">
+                                <input type="hidden" name="_token" value="stGTVgTjMMapCM9aA90ELX60eEijvoK9c4mEf7J2">                                <img alt="Image" src="edit_index_files/3390ad36f1914b32838f55683c95a1f4_00000-preview.jpg" class="avatar avatar-lg">
+                                <div class="media-body ml-3">
+                                    <div class="custom-file custom-file-naked d-block mb-1">
+                                        <input type="file" required="" class="custom-file-input d-none" id="avatar-file" name="avatar" onchange="document.getElementById('avatar_upload_form').submit()">
+                                        <label class="custom-file-label position-relative" for="avatar-file">
+                              <span class="btn btn-primary">
+                              <span class="btn btn-primary">
+                                Загрузить фотографию
+                              </span>
+                                        </span>
+                                        </label>
+                                    </div>
+                                    <small>На изображении должно быть видно Ваше лицо. Изображение не может быть больше 5МБ и должно быть в формате .jpg или .png</small>
+                                </div>
+                            </form>
+
+                            <form method="post" enctype="multipart/form-data" action="/edit">
+                                <input type="hidden" name="_token" value="stGTVgTjMMapCM9aA90ELX60eEijvoK9c4mEf7J2">                                <div class="form-group row align-items-start">
+                                    <label class="col-4">Фамилия</label>
+                                    <div class="col">
+                                        <input type="text" placeholder="" value="{{ ii }}" name="last_name" class="form-control" required="">
+                                    </div>
+                                </div>
+                                <div class="form-group row align-items-start">
+                                    <label class="col-4">Имя</label>
+                                    <div class="col">
+                                        <input type="text" required="" placeholder="" value="{{ fi }}" name="first_name" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group row align-items-start">
+                                    <label class="col-4">Отчество</label>
+                                    <div class="col">
+                                        <input type="text" placeholder="" value="{{ oi }}" name="patronymic" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group row align-items-start">
+                                    <label class="col-4">Номер телефона</label>
+                                    <div class="col">
+                                        <input type="text" placeholder="+7 123 345 56 66" value="{{ phone }}" name="phone" class="form-control">
+                                    </div>
+                                </div>
+                                                                <div class="form-group row align-items-start">
+                                    <label class="col-4">Гражданство</label>
+                                    <div class="col">
+                                        <input class="form-control" type="text" required="" name="citizenship" value="{{ citizenship }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row align-items-start">
+                                    <label class="col-4">Дата рождения</label>
+                                    <div class="col">
+
+                                        <input type="date" name="birthdate" class="form-control flatpickr-input" required="" data-min-date="1945-01-01" data-max-date="2023-01-01" value="{{ birthdate }}" placeholder="Выберете дату" data-flatpickr="">
+                                    </div>
+                                </div>
+                                <div class="form-group row align-items-start">
+                                    <label class="col-4">Серия и номер паспорта или номер свидетельства о рождении (для несовершеннолетних)</label>
+                                    <div class="col">
+                                        <input type="text" placeholder="9200 132456" value="{{ passport_series }}" name="passport_series" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group row align-items-start">
+                                    <label class="col-4">СНИЛС</label>
+                                    <div class="col">
+                                        <input type="text" placeholder="182-455-885 79" value="{{ snils }}" name="snils" class="form-control">
+                                    </div>
+                                </div>
+
+                                                                    <div class="form-group row align-items-start">
+                                        <label class="col-4">Регион</label>
+                                        <div class="col">
+                                            <select class="form-control" name="region_id">
+                                                                                                    <option value="22">Алтайский край</option>
+                                                                                                    <option value="28">Амурская область</option>
+                                                                                                    <option value="29">Архангельская область</option>
+                                                                                                    <option value="30">Астраханская область</option>
+                                                                                                    <option value="90">Байконур</option>
+                                                                                                    <option value="31">Белгородская область</option>
+                                                                                                    <option value="32">Брянская область</option>
+                                                                                                    <option value="33">Владимирская область</option>
+                                                                                                    <option value="34">Волгоградская область</option>
+                                                                                                    <option value="35">Вологодская область</option>
+                                                                                                    <option value="36">Воронежская область</option>
+                                                                                                    <option value="89">г. Севастополь</option>
+                                                                                                    <option value="80">Донецкая Народная Республика</option>
+                                                                                                    <option value="79">Еврейская автономная область</option>
+                                                                                                    <option value="75">Забайкальский край</option>
+                                                                                                    <option value="85">Запорожская область</option>
+                                                                                                    <option value="37">Ивановская область</option>
+                                                                                                    <option value="38">Иркутская область</option>
+                                                                                                    <option value="7">Кабардино-Балкарская Республика</option>
+                                                                                                    <option value="39">Калининградская область</option>
+                                                                                                    <option value="40">Калужская область</option>
+                                                                                                    <option value="41">Камчатский край</option>
+                                                                                                    <option value="9">Карачаево-Черкесская Республика</option>
+                                                                                                    <option value="42">Кемеровская область - Кузбасс</option>
+                                                                                                    <option value="43">Кировская область</option>
+                                                                                                    <option value="44">Костромская область</option>
+                                                                                                    <option value="23">Краснодарский край</option>
+                                                                                                    <option value="24">Красноярский край</option>
+                                                                                                    <option value="45">Курганская область</option>
+                                                                                                    <option value="46">Курская область</option>
+                                                                                                    <option value="47">Ленинградская область</option>
+                                                                                                    <option value="48">Липецкая область</option>
+                                                                                                    <option value="81">Луганская Народная Республика</option>
+                                                                                                    <option value="49">Магаданская область</option>
+                                                                                                    <option value="77">Москва</option>
+                                                                                                    <option value="50">Московская область</option>
+                                                                                                    <option value="51">Мурманская область</option>
+                                                                                                    <option value="83">Ненецкий автономный округ</option>
+                                                                                                    <option value="52">Нижегородская область</option>
+                                                                                                    <option value="53">Новгородская область</option>
+                                                                                                    <option value="54">Новосибирская область</option>
+                                                                                                    <option value="55">Омская область</option>
+                                                                                                    <option value="56">Оренбургская область</option>
+                                                                                                    <option value="57">Орловская область</option>
+                                                                                                    <option value="58">Пензенская область</option>
+                                                                                                    <option value="59">Пермский край</option>
+                                                                                                    <option value="25">Приморский край</option>
+                                                                                                    <option value="60">Псковская область</option>
+                                                                                                    <option value="1">Республика Адыгея</option>
+                                                                                                    <option value="4">Республика Алтай</option>
+                                                                                                    <option value="2">Республика Башкортостан</option>
+                                                                                                    <option value="3">Республика Бурятия</option>
+                                                                                                    <option value="5">Республика Дагестан</option>
+                                                                                                    <option value="6">Республика Ингушетия</option>
+                                                                                                    <option value="8">Республика Калмыкия</option>
+                                                                                                    <option value="10">Республика Карелия</option>
+                                                                                                    <option value="11">Республика Коми</option>
+                                                                                                    <option value="82">Республика Крым</option>
+                                                                                                    <option value="12">Республика Марий Эл</option>
+                                                                                                    <option value="13" selected="selected">Республика Мордовия</option>
+                                                                                                    <option value="14">Республика Саха (Якутия)</option>
+                                                                                                    <option value="15">Республика Северная Осетия - Алания</option>
+                                                                                                    <option value="16">Республика Татарстан</option>
+                                                                                                    <option value="17">Республика Тыва</option>
+                                                                                                    <option value="19">Республика Хакасия</option>
+                                                                                                    <option value="61">Ростовская область</option>
+                                                                                                    <option value="62">Рязанская область</option>
+                                                                                                    <option value="63">Самарская область</option>
+                                                                                                    <option value="78">Санкт-Петербург</option>
+                                                                                                    <option value="64">Саратовская область</option>
+                                                                                                    <option value="65">Сахалинская область</option>
+                                                                                                    <option value="66">Свердловская область</option>
+                                                                                                    <option value="67">Смоленская область</option>
+                                                                                                    <option value="26">Ставропольский край</option>
+                                                                                                    <option value="68">Тамбовская область</option>
+                                                                                                    <option value="69">Тверская область</option>
+                                                                                                    <option value="70">Томская область</option>
+                                                                                                    <option value="71">Тульская область</option>
+                                                                                                    <option value="72">Тюменская область</option>
+                                                                                                    <option value="18">Удмуртская Республика</option>
+                                                                                                    <option value="73">Ульяновская область</option>
+                                                                                                    <option value="27">Хабаровский край</option>
+                                                                                                    <option value="86">Ханты-Мансийский автономный округ - Югра</option>
+                                                                                                    <option value="84">Херсонская область</option>
+                                                                                                    <option value="74">Челябинская область</option>
+                                                                                                    <option value="20">Чеченская Республика</option>
+                                                                                                    <option value="21">Чувашская Республика</option>
+                                                                                                    <option value="87">Чукотский автономный округ</option>
+                                                                                                    <option value="88">Ямало-Ненецкий автономный округ</option>
+                                                                                                    <option value="76">Ярославская область</option>
+                                                                                            </select>
+                                        </div>
+                                    </div>
+                                
+
+                                <div class="row align-items-start">
+                                    <p class="col-4">Ваш пол</p>
+                                    <div class="col">
+                                        <label for="gender_male">Мужской</label>
+                                        <input type="radio" id="gender_male" value="1" name="gender_id" checked="checked">
+                                    </div>
+                                    <div class="col">
+                                        <label for="gender_female">Женский</label>
+                                        <input type="radio" id="gender_female" value="2" name="gender_id">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row align-items-start">
+                                    <label class="col-4">Согласие на обработку персональных данных</label>
+
+                                    <div class="col">
+                                                                                    <a href="https://esim.firpo.ru/storage/91636/UafLWn4VZdE.jpg" download="" target="_blank" class="btn btn-primary">Скачать загруженное согласие</a>
+                                                                                <div class="custom-file">
+
+                                            <input type="file" class="custom-file-input" name="consent_file">
+                                            <label class="custom-file-label">Выберите файл с согласием</label>
+
+                                        </div>
+
+                                                                                <p class="text-small">Для
+ участия в мероприятиях движения по профессиональному мастерству 
+необходимо заполнить, подписать и загрузить согласие на обработку 
+данных. <a href="https://esim.firpo.ru/examples/Soglasie_na_obrabotku_pesdannyh.docx" target="_blank" download="">Шаблон для
+                                                совершеннолетних</a>. <a href="https://esim.firpo.ru/examples/Soglasie_na_obrabotku_pesdannyh_nesovershennoletnij.docx" target="_blank" download="">Шаблон для несовершеннолетних</a>.</p>
+                                    </div>
+                                </div>
+                                <div class="form-group row align-items-start">
+                                    <div class="col-4"></div>
+                                    <div class="col">
+                                        <label>
+                                            <input type="checkbox" class="form-check-inline" required="" name="is_user_agreed" value="1" ><span>Я согласен с <a href="https://pro.firpo.ru/policy/" target="_blank">политикой конфиденциальности и правилами
+                                            обработки персональных данных</a></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Сохранить данные профиля</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" role="tabpanel" id="education_tab">
+                            <form method="post" enctype="multipart/form-data" class="media mb-4" action="">
+                                <input type="hidden" name="_token" value="stGTVgTjMMapCM9aA90ELX60eEijvoK9c4mEf7J2">                                <div class="row justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Сохранить данные об образовании</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" role="tabpanel" id="work_tab">
+                            <form method="post" enctype="multipart/form-data" class="media mb-4" action="">
+                                <input type="hidden" name="_token" value="stGTVgTjMMapCM9aA90ELX60eEijvoK9c4mEf7J2">                                <div class="row justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Сохранить данные об профессиональной деятельности</button>
+                                </div>
+                            </form>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+
+</body></html>

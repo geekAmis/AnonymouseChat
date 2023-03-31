@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+<title>{{ username }} - Цифровая Платформа Чемпионата</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<link href="/static/favicon.ico" rel="icon" type="image/x-icon">
+<link href="index_files/icon.css" rel="stylesheet">
+<link href="index_files/css.css" rel="stylesheet">
+<link href="index_files/theme.css" rel="stylesheet" type="text/css" media="all">
+<link href="index_files/custom.css" rel="stylesheet" type="text/css" media="all">
+<meta name="theme-color" content="#ffffff">
+<link rel="apple-touch-icon" sizes="180x180" href="https://esim.firpo.ru/img/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://esim.firpo.ru/img/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://esim.firpo.ru/img/favicons/favicon-16x16.png">
+<link rel="manifest" href="https://esim.firpo.ru/img/favicons/site.webmanifest">
+<link rel="mask-icon" href="https://esim.firpo.ru/img/favicons/safari-pinned-tab.svg" color="#4ecc0a">
+<link rel="shortcut icon" href="https://esim.firpo.ru/img/favicons/favicon.ico">
+<meta name="msapplication-TileColor" content="#00a300">
+<meta name="msapplication-config" content="/img/favicons/browserconfig.xml">
+
+<script src="/static/socket.io.min.js"></script>
+    <script>
+        var socket = io();
+
+    </script>
+
+</head>
+
+<body cz-shortcut-listen="true">
+
+<div class="layout layout-nav-side">
+    <div class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
+
+    <a class="navbar-brand" href="/">
+        <img alt="" src="index_files/pro-logo-white.svg">
+    </a>
+    <div class="d-flex align-items-center">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="d-block d-lg-none ml-2">
+            <div class="dropdown">
+                <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img alt="Image" src="index_files/user_icon.svg" class="avatar">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="/" class="dropdown-item">Профиль</a>
+                    <a href="/logout" class="dropdown-item">Выход</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="collapse navbar-collapse flex-column" id="navbar-collapse">
+        <ul class="navbar-nav d-lg-block">
+            
+            <hr>
+            
+            
+        </ul>
+
+
+        <hr>
+        <div class="d-none d-lg-block w-100">
+            <span class="text-small text-muted">Полезное</span>
+            <ul class="nav nav-small flex-column mt-2">
+                <li class="nav-item"> 
+                    <a class="nav-link" target="_blank" href="/chat">Анонимный чат</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/req" target="_blank" class="nav-link">Разработчик</a>
+                </li>   
+                <li class="nav-item">
+                    <a href="/payment?from=/" target="_blank" class="nav-link">Донат</a>
+                </li>
+                <li class="nav-item"> 
+                    <a class="nav-link" target="_blank" href="https://any-more.ru">Any-mangA</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/" class="nav-link">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin-page" class="nav-link">Admin page</a>
+                </li>
+
+            </ul>
+            <hr>
+        </div>
+
+        <div>
+
+
+        </div>
+    </div>
+    <div class="d-none d-lg-block">
+        <div class="dropup" onclick="document.getElementById('show-menu').classList.toggle('show');">
+            <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img alt="Image" src="index_files/3390ad36f1914b32838f55683c95a1f4_00000-thumb.jpg" class="avatar">
+            </a>
+            <div class="dropdown-menu" id="show-menu">
+                <p class="dropdown-item disabled">{{ username }}</p>
+                <a href="/" class="dropdown-item">Профиль</a>
+                <a href="/logout" class="dropdown-item">Выход</a>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="main-container">
+
+        
+        <div class="container">
+            <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="page-header mb-4">
+                <div class="media">
+                    <img alt="Image" src="index_files/3390ad36f1914b32838f55683c95a1f4_00000-preview.jpg" class="avatar avatar-lg mt-1">
+                    <div class="media-body ml-3">
+                        <h1 class="mb-0">{{ fio }}<a class="btn btn-round d-inline-block" href="/edit">
+                                    <i class="material-icons">edit</i>
+                                </a>
+                                                    </h1>
+                        <p class="lead"><a href="mailto:{{ username }}">{{ username }}</a> <a href="tel:{{ phone }}">{{ phone }}</a></p>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="row">
+                                                    <div class="col-12">
+                        <h4>Участие в движении</h4>
+                                                    <div class="card card-task col-12 card-hoverable">
+
+                                <div class="card-body">
+                                    <div class="card-title">
+                                                                                    <h6>Региональный этап чемпионата по профессиональному мастерству "Профессионалы" Республики Мордовия в 2023 году.</h6>
+                                        
+                                                                                    <span class="text-small">03.04.2023 - 07.04.2023</span>
+                                        
+                                    </div>
+                                    <div>
+                                                                                    <p>Веб-технологии - конкурсант</p>
+                                        
+                                    </div>
+                                </div>
+                            </div><!--end of card-->
+                                            </div>
+                
+            </div>
+                    </div>
+    </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<div id="draggable-live-region" aria-relevant="additions" aria-atomic="true" aria-live="assertive" role="log" style="position: fixed; width: 1px; height: 1px; top: -1px; overflow: hidden;"></div>
+</body></html>

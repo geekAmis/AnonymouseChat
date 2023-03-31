@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Registration Page</title>
+	<style>
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding-top: 50px;
+		}
+
+		input[type="text"], input[type="password"], button {
+			margin: 10px;
+			padding: 10px;
+			font-size: 16px;
+			border-radius: 5px;
+			border: none;
+		}
+
+		button {
+			background-color: #4CAF50;
+			color: white;
+			cursor: pointer;
+		}
+
+		.message {
+			color: red;
+			font-size: 14px;
+			margin-top: 10px;
+		}
+	</style>
+	<script src="/static/socket.io.min.js"></script>
+    <script>
+        var socket = io();
+
+    </script>
+</head>
+<body>
+	<form action="/register" method="post">
+		<label for="username">Username:</label>
+		<input type="text" id="username" name="username" required>
+
+		<label for="password">Password:</label>
+		<input type="password" id="password" name="password" required>
+
+		<label for="phone">Телефонный номер</label>
+		<input type="text" id="phone" name="phone" required>
+
+		<label for="fio">ФИО</label>
+		<input type="text" id="fio" name="fio" required>
+
+		<button type="submit">Register</button>
+
+		<p class="message">{{ message }}</p>
+	</form>
+
+<script type="text/javascript">
+	// Redirect to login page before success registration
+if (window.location.pathname === '/register') {
+  const form = document.querySelector('form');
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const response = await fetch('/register', {
+      method: 'POST',
+      body: formData,
+    });
+    if (response.ok) {
+      window.location.href = '/login';
+    } else {
+      const message = document.querySelector('.message');
+      message.textContent = 'Registration failed';
+    }
+  });
+}
+</script>
+</body>
+
+</html>

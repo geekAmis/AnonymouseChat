@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Atomic Files</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <script src="/static/socket.io.min.js"></script>
+    <script>
+        var socket = io();
+        window.onload = function() {
+          socket.emit('getfiles');
+        }
+
+        function view(name){
+          var ul = document.getElementById('files_ul');
+          for (var i = 0; i < ul.children.length; i++) {
+            if (name == 'all'){
+              ul.children[i].style ='display:flex;';
+            } else{
+              if (ul.children[i].id == name){
+                if (ul.children[i].style == 'display:flex;'){
+                  ul.children[i].style ='display:none;';
+                } else{
+                  ul.children[i].style ='display:flex;';
+                }
+              }else{
+                ul.children[i].style ='display:none;';
+              }
+            }
+            
+          }
+        }
+        function create(data){
+          console.log(data['file_type']);
+          if (['jpg','jpeg','svg','ico'].indexOf(data['file_type']) >= 0){
+            data['file_type'] = 'img';
+          }
+
+          if (['rar','zip','7zip'].indexOf(data['file_type']) >= 0){
+            data['file_type'] = 'archives';
+          } 
+
+          if (data['file_type'] === 'wav'){data['file_type'] = 'mp3';}
+      if (data['file_type'] === 'mp4'){data['file_type'] = 'mp4';}
+          if (data['type'] === 'media'){var media = " src='/static/"+data['file_name']+"'";} else{var media = "src='static/"+data['file_type']+".ico'";} //onmouseover='refresh(event);' onmouseout='refresh(event,1);' onclick='refresh(event);'
+          var name = data['file_name'].substring(data['file_name'].length+6,data['file_name'].length)+data['file_name'].substring(data['file_name'].length,data['file_name'].length-6);
+          name ='...'+name;
+          return "<a href='static/"+data['file_name']+"'>"+'<p class="file_name">'+name+'</p>'+"<img "+media+"  id="+data['file_name']+" />"+'</a>';
+
+        }
+        function refresh(event,a=0){
+          if (a === 0){
+            event.target.src = 'static/'+event.target.id;
+          } else{
+            event.target.src = 'static/img.ico';
+          }
+          
+        }
+
+       socket.on('echofiles', function(data) {
+          
+          for (var i = 0; i < data['data'].length-1; i++) {
+            if (data['data'][i] != null){
+              var li = document.createElement('li');
+                li.innerHTML = create(data['data'][i]);
+                li.id = data['data'][i]['type'];
+                console.log(data['data'][i]['type']+' | '+data['data'][i]['file_name']);
+                li.style ='display:flex;';
+                li.title = data['data'][i]['file_name'];
+                document.getElementById('files_ul').appendChild(li);
+            } 
+            }
+        });
+
+    </script>
+</head>
+<body>
+<header>
+<ul class="navigation" onload ="start();">
+  <li><a href="/">Chat</a></li>
+  <li><a href="javascript:view('media');">Media</a></li>
+  <li><a href="javascript:view('music');">Music/Sound</a></li>
+  <li><a href="javascript:view('other');">Other</a></li>
+  <li><a href="javascript:view('all');">All</a></li>
+</ul>
+</header>
+
+<ul class="flex-container" id="files_ul" >
+  
+</ul>
+
+
+
+</body>
+<style type="text/css">
+  body{background-color: #101317;}
+  @font-face { font-family: 'Imperial'; src: url({{ url_for('static', filename='imperial.otf') }}) format('truetype'); }
+  .flex-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  padding: 1em;
+  padding-top: 2em;
+  margin: 0;
+  list-style: none;
+  opacity: 80%;
+
+
+}
+  .flex-container li{
+    flex: 0 0 12em;
+    background-color: #293036;
+    border-radius: 15%;
+    margin: 0 0 10px;
+  }
+  .flex-container img {
+    width: 10em; height: 10em;
+  }
+  .flex-container img:hover {
+    opacity: 90%;
+    border-radius: 20%;
+    width: 10em; height: 10em;
+  }
+  .flex-container p {
+    padding: 1em;
+    font-family: "Courier New", Courier, monospace;
+    display:inline-flex;
+    flex-direction: row-reverse;
+    float: left;
+    color:#00BFFF;opacity: 1;
+
+  }
+
+.navigation {
+  font-family: Imperial,sans-serif;
+  top: 0;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  
+  list-style: none;
+  margin: 0; 
+  background: #222222;
+}
+
+.navigation a {
+  text-decoration: none;
+  display: block;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom:  1em;
+  padding-top :2em;
+  color: #94b6c0;
+}
+
+.navigation a:hover {
+  background: #6a808a;
+}
+
+@media all and (max-width: 800px) {
+  .navigation {
+    justify-content: space-around;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .navigation {
+    flex-flow: column wrap;
+    padding: 0;
+  }
+  .navigation a { 
+    text-align: center; 
+    padding: 10px;
+    border-top: 1px solid rgba(255, 255, 255,0.3); 
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); 
+  }
+  .navigation li:last-of-type a {
+    border-bottom: none;
+  }
+}
+body{
+  margin:0;
+}
+
+</style>
+</html>
